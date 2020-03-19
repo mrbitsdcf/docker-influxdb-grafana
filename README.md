@@ -42,3 +42,8 @@ docker pull influxdb
 docker pull telegraf
 ```
 
+Contribute:
+
+* Fork the repository
+* Change something
+* Submit pull request
