@@ -3,6 +3,17 @@
 # + Grafana stack
 # + Cronograph
 
+What to you need to run this software:
+
+* Docker
+* Docker Compose
+
+Get the software:
+
+```
+git clone https://github.com/mrbitsdcf/docker-influxdb-grafana.git
+```
+
 Run your stack:
 
 ```
