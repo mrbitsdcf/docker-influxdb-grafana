@@ -14,7 +14,7 @@ services:
       - influxdb-data:/var/lib/influxdb
       - $PWD/influxdb.conf:/etc/influxdb/influxdb.conf
     networks:
-      covid19:
+      influx:
         aliases:
           - influxdb
     restart: always
@@ -27,7 +27,7 @@ services:
     volumes:
         - chronograf-data:/var/lib/chronograf
     networks:
-      covid19:
+      influx:
         aliases:
           - cronograf
     restart: always
@@ -43,7 +43,7 @@ services:
       - grafana-data:/var/lib/grafana
       - $PWD/grafana.ini:/etc/grafana/grafana.ini
     networks:
-      covid19:
+      influx:
         aliases:
           - grafana
     restart: always
@@ -54,4 +54,4 @@ volumes:
   chronograf-data:
 
 networks:
-  covid19:
+  influx:
