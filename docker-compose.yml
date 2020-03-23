@@ -21,7 +21,7 @@ services:
 
   chronograf:
     image: chronograf:1.5
-    container_name: cronograf
+    container_name: chronograf
     ports:
         - 127.0.0.1:8087:8888
     volumes:
@@ -29,7 +29,7 @@ services:
     networks:
       influx:
         aliases:
-          - cronograf
+          - chronograf
     restart: always
 
   grafana:
@@ -58,16 +58,34 @@ services:
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
     volumes:
       - kapacitor-data:/var/lib/kapacitor
+      - $PWD/kapacitor.conf:/etc/kapacitor/kapacitor.conf
     networks:
       influx:
         aliases:
           - kapacitor
+    restart: always
+
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    environment:
+      HOSTNAME: telegraf
+    volumes:
+      - telegraf-data:/etc/telegraf/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/telegraf.conf:/etc/telegraf/telegraf.conf
+    networks:
+      influx:
+        aliases:
+          - telegraf
+    restart: always
 
 volumes:
   influxdb-data:
   grafana-data:
   chronograf-data:
   kapacitor-data:
+  telegraf-data:
 
 networks:
   influx:
