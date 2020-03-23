@@ -1,0 +1,6 @@
+127.0.0.1   localhost
+127.0.0.1   influxdb
+127.0.0.1   grafana
+127.0.0.1   kapacitor
+127.0.0.1   telegraf
+127.0.0.1   chronograf

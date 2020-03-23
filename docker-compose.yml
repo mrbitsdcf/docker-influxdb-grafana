@@ -4,37 +4,41 @@ services:
   influxdb:
     image: influxdb:latest
     container_name: influxdb
+    network_mode: host
+    hostname: influxdb
     ports:
       - "8083:8083"
       - "8086:8086"
       - "8090:8090"
     env_file:
       - "env.influxdb"
+    environment:
+      KAPACITOR_URL: http://localhost:9092
     volumes:
       - influxdb-data:/var/lib/influxdb
       - $PWD/influxdb.conf:/etc/influxdb/influxdb.conf
-    networks:
-      influx:
-        aliases:
-          - influxdb
+      - $PWD/hosts:/etc/hosts:ro
     restart: always
 
   chronograf:
     image: chronograf:1.5
     container_name: chronograf
+    network_mode: host
+    hostname: chronograf
     ports:
-        - "8087:8888"
+        - "8888:8888"
     volumes:
         - chronograf-data:/var/lib/chronograf
-    networks:
-      influx:
-        aliases:
-          - chronograf
+        - $PWD/hosts:/etc/hosts:ro
+    depends_on:
+      - influxdb
     restart: always
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    network_mode: host
+    hostname: grafana
     ports:
       - "3000:3000"
     env_file:
@@ -42,42 +46,43 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - $PWD/grafana.ini:/etc/grafana/grafana.ini
-    networks:
-      influx:
-        aliases:
-          - grafana
+      - $PWD/hosts:/etc/hosts:ro
+    depends_on:
+      - influxdb
     restart: always
 
   kapacitor:
     image: kapacitor
     container_name: kapacitor
+    network_mode: host
+    hostname: kapacitor
     ports:
       - "9092:9092"
     environment:
       KAPACITOR_HOSTNAME: kapacitor
-      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+      KAPACITOR_INFLUXDB_0_URLS_0: http://localhost:8086
     volumes:
       - kapacitor-data:/var/lib/kapacitor
       - $PWD/kapacitor.conf:/etc/kapacitor/kapacitor.conf
-    networks:
-      influx:
-        aliases:
-          - kapacitor
+      - $PWD/hosts:/etc/hosts:ro
+    depends_on:
+      - influxdb
     restart: always
 
   telegraf:
     image: telegraf
     container_name: telegraf
+    network_mode: host
+    hostname: telegraf
     environment:
       HOSTNAME: telegraf
     volumes:
       - telegraf-data:/etc/telegraf/
       - /var/run/docker.sock:/var/run/docker.sock
       - $PWD/telegraf.conf:/etc/telegraf/telegraf.conf
-    networks:
-      influx:
-        aliases:
-          - telegraf
+      - $PWD/hosts:/etc/hosts:ro
+    depends_on:
+      - influxdb
     restart: always
 
 volumes:
@@ -86,6 +91,3 @@ volumes:
   chronograf-data:
   kapacitor-data:
   telegraf-data:
-
-networks:
-  influx:
