@@ -48,10 +48,26 @@ services:
           - grafana
     restart: always
 
+  kapacitor:
+    image: kapacitor
+    container_name: kapacitor
+    ports:
+      - "9092:9092"
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+    volumes:
+      - kapacitor-data:/var/lib/kapacitor
+    networks:
+      influx:
+        aliases:
+          - kapacitor
+
 volumes:
   influxdb-data:
   grafana-data:
   chronograf-data:
+  kapacitor-data:
 
 networks:
   influx:
