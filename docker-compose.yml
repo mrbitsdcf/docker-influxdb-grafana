@@ -23,7 +23,7 @@ services:
     image: chronograf:1.5
     container_name: chronograf
     ports:
-        - 127.0.0.1:8087:8888
+        - "8087:8888"
     volumes:
         - chronograf-data:/var/lib/chronograf
     networks:
@@ -89,3 +89,5 @@ volumes:
 
 networks:
   influx:
+    driver:
+      - host
