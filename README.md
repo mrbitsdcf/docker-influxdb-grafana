@@ -1,7 +1,9 @@
 # Docker-compose files for a simple uptodate
-# InfluxDB
-# + Grafana stack
-# + Cronograph
+## InfluxDB
+## Grafana stack
+## Chronograph
+## Telefraf
+## Kapacitor
 
 What to you need to run this software:
 
@@ -40,6 +42,8 @@ git pull
 docker pull grafana/grafana
 docker pull influxdb
 docker pull telegraf
+docker pull chronograf
+docker pull kapacitor
 ```
 
 Contribute:
